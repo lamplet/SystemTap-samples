@@ -1,0 +1,11 @@
+#! /usr/bin/env stap
+ 
+probe begin {
+  printf("%6s %16s %6s %6s %16s\n",
+         "UID", "CMD", "PID", "DEST_IP", "DEST_PORT")
+}
+ 
+probe syscall.connect {
+         if (uaddr_ip=~"192.169.*")
+             printf("%6d %16s %6d %s %6s\n", uid(), execname(), pid(), uaddr_ip, uaddr_ip_port)
+}
